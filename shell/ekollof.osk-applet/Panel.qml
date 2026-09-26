@@ -61,11 +61,8 @@ Panel {
   }
 
   function toggleOsk() {
-    const shell = root.shellObj()
-    if (shell && typeof shell.toggle === "function")
-      shell.toggle(root.oskPluginId, "{}")
-    else if (root.bar)
-      root.bar.run("omarchy-shell shell toggle " + root.oskPluginId + " '{}'")
+    if (root.bar)
+      root.bar.run("omarchy-shell ekollof.osk toggle")
   }
 
   function shellQuote(s) {
