@@ -1,3 +1,40 @@
+> **This is an unmodified mirror of [`ekollof/omarchy-osk`](https://github.com/ekollof/omarchy-osk).**
+>
+> It is kept only so the upstream `master` is available under this account. It
+> contains **no changes from this fork**, and it is not installed on this machine.
+>
+> ## Why it is not used here
+>
+> The compositor plugin in this project consumes the touch bus on purpose — its
+> own description says the plugin "consumes all touchscreen input and re-emits it
+> as pointer input", and `dropNativeTouch()` in `hypr-osk/src/main.cpp` calls
+> `sendTouchCancel()` and resets Hyprland's touch focus. On this machine that went
+> further than intended: it trapped every touchscreen event, not only those landing
+> on the keyboard, so tapping anywhere else on the screen did nothing at all.
+>
+> It could not be unloaded cleanly either — `hyprctl plugin unload` reported
+> `plugin not loaded` for every handle and name it listed as active, which meant a
+> compositor restart was the only way to recover. That happened once.
+>
+> ## What replaced it
+>
+> | Instead of this | Use |
+> |---|---|
+> | The OSK applet's toggle button | [`matthewh.osk-toggle`](https://github.com/matthewhand/omarchy-osk-toggle) — a bar button that toggles Omarchy's own `omarchy-keyboard-panel` |
+> | Reaching the overlay over generic IPC | Calling the overlay's own `IpcHandler` — see the history of the deleted `fix/osk-applet-toggle` branch |
+>
+> The upstream applet's toggle is still broken: it routes through a generic
+> `omarchy-shell` path that panel plugins do not expose, so the button silently
+> does nothing. This fork previously carried a two-line fix for that
+> (`root.bar.run("omarchy-shell ekollof.osk toggle")`). It was dropped because
+> `matthewh.osk-toggle` covers the same need from the bar without the compositor
+> plugin at all.
+>
+> Nothing from this project is loaded by the current Hyprland config; the load
+> block in `~/.config/hypr/osk.lua` is commented out with that reasoning inline.
+
+---
+
 # omarchy-osk
 
 On-screen keyboard + virtual touchscreen pointer device for
